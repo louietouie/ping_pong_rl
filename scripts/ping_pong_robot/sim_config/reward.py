@@ -4,6 +4,21 @@ from isaaclab.utils import configclass
 
 import isaaclab_tasks.manager_based.classic.cartpole.mdp as mdp
 
+"""
+Ping Pong Brainstorm
+
+Rewards for robot
+Penalize all joint velocities
+    Penalize joint accelerations
+    I would rather have the arm move back to the center between hits slowly rather than quickly... but penalizing something like distance traveled would penalize these the same, regardless of if it did it slow or fast
+Penalize joint limits (or terminate if past joint limit, and penalize termination)
+
+Reward ping pong ball landing on other side of table on first bounce
+    Reward contact with ping pong ball
+    Reward paddle close to ball
+    Reward ball contact that moves it in the correct direction
+"""
+
 @configclass
 class RewardsCfg:
     """Reward terms for the MDP."""
