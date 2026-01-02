@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+
+<!-- comments cannot go above xml tag -->
+<!-- used chatgpt to change my xacro from the mpc_sandbox repo to urdf... did not qa -->
+
+<robot name="robot_arm">
+
+  <!-- base link not needed in IsaacSim because option during direct import (File - Import) for static base -->
+
+  <link name="odrive_base">
+    <visual>
+      <geometry>
+        <cylinder radius="0.09" length="0.1615"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.09" length="0.1615"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.01"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- SHOULDER -->
+  <joint name="shoulder" type="revolute">
+    <parent link="odrive_base"/>
+    <child link="upperarm"/>
+    <origin xyz="0 0 0.1615"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="0.1" velocity="2"/>
+  </joint>
+
+  <link name="upperarm">
+    <visual>
+      <geometry>
+        <box size="0.30381 0.070471 0.070471"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.30381 0.070471 0.070471"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.982"/>
+      <origin xyz="0.1519 0 0"/>
+      <inertia ixx="0.002" iyy="0.01" izz="0.01"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- ELBOW -->
+  <joint name="elbow" type="revolute">
+    <parent link="upperarm"/>
+    <child link="forearm"/>
+    <origin xyz="0.30381 0 0.070471"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="0.1" velocity="2"/>
+  </joint>
+
+  <link name="forearm">
+    <visual>
+      <geometry>
+        <box size="0.259916 0.02545 0.02545"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.259916 0.02545 0.02545"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.6"/>
+      <origin xyz="0.12996 0 0"/>
+      <inertia ixx="0.001" iyy="0.004" izz="0.004"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- WRIST ORBIT -->
+  <joint name="wrist_orbit" type="revolute">
+    <parent link="forearm"/>
+    <child link="wrist_bone"/>
+    <origin xyz="0.259916 0 0.012725"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.5708" upper="1.5708" effort="0.1" velocity="2"/>
+  </joint>
+
+  <link name="wrist_bone">
+    <visual>
+      <geometry>
+        <sphere radius="0.005"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.005"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1e-5" iyy="1e-5" izz="1e-5"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- WRIST SPIN -->
+  <joint name="wrist_spin" type="revolute">
+    <parent link="wrist_bone"/>
+    <child link="end_effector"/>
+    <origin xyz="0.01 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.14159" upper="3.14159" effort="0.1" velocity="2"/>
+  </joint>
+
+  <link name="end_effector">
+    <visual>
+      <geometry>
+        <cylinder radius="0.08" length="0.01"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.08" length="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.158"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.001" iyy="0.001" izz="0.001"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+</robot>
