@@ -33,7 +33,7 @@ class RewardsCfg:
     pole_pos = RewTerm(
         func=mdp.joint_pos_target_l2,
         weight=-1.0,
-        params={"asset_cfg": SceneEntityCfg("ping_pong", joint_names=["shoulder", "elbow", "wrist_spin", "wrist_orbit"]), "target": 1.0},
+        params={"asset_cfg": SceneEntityCfg("ping_pong", joint_names=["shoulder", "elbow", "wrist_spin", "wrist_orbit"]), "target": 0.5},
     )
     # # (4) Shaping tasks: lower cart velocity
     # cart_vel = RewTerm(
