@@ -36,6 +36,8 @@ import gymnasium as gym
 import torch
 
 import isaaclab_tasks  # noqa: F401 # Necessary to run the __init__.py script of this module
+import source.ping_pong_rl.ping_pong_rl
+
 from isaaclab_tasks.utils import parse_env_cfg
 
 # PLACEHOLDER: Extension template (do not remove this comment)

@@ -22,14 +22,18 @@ from isaaclab.app import AppLauncher
 app_launcher = AppLauncher(headless=True)
 simulation_app = app_launcher.app
 
-
 """Rest everything follows."""
 
 import gymnasium as gym
 from prettytable import PrettyTable
 
+# This will run the init scripts to register all example IsaacLab environments from 
+# /home/louis/Documents/isaac_projects/IsaacLab/source/isaaclab_tasks
+# Why do these environments load even when this is not imported?
 import isaaclab_tasks  # noqa: F401
 
+# This will run the init scripts for my custom environment (is this the best import path?)
+import source.ping_pong_rl.ping_pong_rl
 
 def main():
     """Print all environments registered in `isaaclab_tasks` extension."""

@@ -1,14 +1,25 @@
-# Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
+import gymnasium as gym
 
-"""
-Python module serving as a project/extension template.
-"""
+from . import sim_config
 
-# Register Gym environments.
-from .tasks import *
+gym.register(
+    id="Isaac-PingPong-v1",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{sim_config.__name__}.environment_rl:PingPongRLEnvCfg",
+        # "env_cfg_entry_point": f"{__name__}.
+        # "rl_games_cfg_entry_point": f"{agents.__name__}:rl_games_ppo_cfg.yaml",
+        # "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:CartpolePPORunnerCfg",
+        # "rsl_rl_with_symmetry_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:CartpolePPORunnerWithSymmetryCfg",
+        "skrl_cfg_entry_point": f"{sim_config.__name__}:skrl_ppo_cfg.yaml",
+        # "sb3_cfg_entry_point": f"{agents.__name__}:sb3_ppo_cfg.yaml",
+    },
+)
 
-# Register UI extensions.
-from .ui_extension_example import *
+# from isaaclab_tasks.utils import import_packages
+
+# # The blacklist is used to prevent importing configs from sub-packages
+# _BLACKLIST_PKGS = ["utils", ".mdp"]
+# # Import all configs in this package
+# import_packages(__name__, _BLACKLIST_PKGS)

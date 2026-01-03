@@ -126,6 +126,8 @@ from isaaclab.utils.io import dump_yaml
 from isaaclab_rl.skrl import SkrlVecEnvWrapper
 
 import isaaclab_tasks  # noqa: F401
+import source.ping_pong_rl.ping_pong_rl
+
 from isaaclab_tasks.utils.hydra import hydra_task_config
 
 # import logger
