@@ -36,37 +36,12 @@ simulation_app = app_launcher.app
 import torch
 
 from isaaclab.envs import ManagerBasedRLEnv
+from scripts.ping_pong_robot.sim_config.environment_rl import PingPongRLEnvCfg
 
-@configclass
-class CartpoleEnvCfg(ManagerBasedRLEnvCfg):
-    """Configuration for the cartpole environment."""
-
-    # Scene settings
-    scene: CartpoleSceneCfg = CartpoleSceneCfg(num_envs=4096, env_spacing=4.0, clone_in_fabric=True)
-    # Basic settings
-    observations: ObservationsCfg = ObservationsCfg()
-    actions: ActionsCfg = ActionsCfg()
-    events: EventCfg = EventCfg()
-    # MDP settings
-    rewards: RewardsCfg = RewardsCfg()
-    terminations: TerminationsCfg = TerminationsCfg()
-
-    # Post initialization
-    def __post_init__(self) -> None:
-        """Post initialization."""
-        # general settings
-        self.decimation = 2
-        self.episode_length_s = 5
-        # viewer settings
-        self.viewer.eye = (8.0, 0.0, 5.0)
-        # simulation settings
-        self.sim.dt = 1 / 120
-        self.sim.render_interval = self.decimation
-
-def main():
+def manually_run_manager():
     """Main function."""
     # create environment configuration
-    env_cfg = CartpoleEnvCfg()
+    env_cfg = PingPongRLEnvCfg()
     env_cfg.scene.num_envs = args_cli.num_envs
     env_cfg.sim.device = args_cli.device
     # setup RL environment
@@ -94,9 +69,8 @@ def main():
     # close the environment
     env.close()
 
-
 if __name__ == "__main__":
     # run the main function
-    main()
+    manually_run_manager()
     # close sim app
     simulation_app.close()
