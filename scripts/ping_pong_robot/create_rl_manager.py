@@ -36,7 +36,7 @@ simulation_app = app_launcher.app
 import torch
 
 from isaaclab.envs import ManagerBasedRLEnv
-from scripts.ping_pong_robot.sim_config.environment_rl import PingPongRLEnvCfg
+from source.ping_pong_rl.ping_pong_rl.sim_config.environment_rl import PingPongRLEnvCfg
 
 def manually_run_manager():
     """Main function."""

@@ -3,7 +3,7 @@ import gymnasium as gym
 from . import sim_config
 
 gym.register(
-    id="Isaac-PingPong-v1",
+    id="Isaac-PingPong-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
     kwargs={

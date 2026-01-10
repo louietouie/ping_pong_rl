@@ -1,10 +1,10 @@
 from isaaclab.envs import ManagerBasedEnvCfg
 from isaaclab.utils import configclass
 
-from scripts.ping_pong_robot.sim_config.scene import PingPongSceneCfg
-from scripts.ping_pong_robot.sim_config.action import ActionsCfg
-from scripts.ping_pong_robot.sim_config.event import EventCfg
-from scripts.ping_pong_robot.sim_config.observation import ObservationsCfg
+from source.ping_pong_rl.ping_pong_rl.sim_config.scene import PingPongSceneCfg
+from source.ping_pong_rl.ping_pong_rl.sim_config.action import ActionsCfg
+from source.ping_pong_rl.ping_pong_rl.sim_config.event import EventCfg
+from source.ping_pong_rl.ping_pong_rl.sim_config.observation import ObservationsCfg
 
 @configclass
 class PingPongEnvCfg(ManagerBasedEnvCfg):

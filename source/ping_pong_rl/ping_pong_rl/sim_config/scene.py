@@ -6,7 +6,7 @@ from isaaclab.assets import ArticulationCfg, AssetBaseCfg
 from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.utils import configclass
 
-from scripts.ping_pong_robot.sim_config.models import PINGPONG_CFG
+from source.ping_pong_rl.ping_pong_rl.sim_config.models import PINGPONG_CFG
 # from models import PINGPONG_CFG
 
 @configclass

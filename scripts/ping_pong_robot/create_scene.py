@@ -23,7 +23,7 @@ import isaaclab.sim as sim_utils
 from isaaclab.scene import InteractiveScene
 from isaaclab.sim import SimulationContext
 
-from ping_pong_scene import PingPongSceneCfg
+from source.ping_pong_rl.ping_pong_rl.sim_config.scene import PingPongSceneCfg
 
 def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
     """Runs the simulation loop."""

@@ -40,7 +40,7 @@ import torch
 
 from isaaclab.envs import ManagerBasedEnv
 
-from scripts.ping_pong_robot.sim_config.environment import PingPongEnvCfg
+from source.ping_pong_rl.ping_pong_rl.sim_config.environment import PingPongEnvCfg
 
 def main():
     """Main function."""
