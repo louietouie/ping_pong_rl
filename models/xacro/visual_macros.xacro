@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <xacro:macro name="square_prism_identical_collision" params="length height *material">
+        <visual>
+            <geometry>
+                <box size="${length} ${height} ${height}"/>
+            </geometry>
+            <origin xyz="${length/2} 0 ${height/2}" />
+            <xacro:insert_block name="material"/>
+        </visual>
+        <!-- <collision>
+            <geometry>
+                <box size="${length} ${height} ${height}"/>
+            </geometry>
+            <origin xyz="0 ${length/2} ${height/2}" />
+        </collision> -->
+    </xacro:macro>
+
+    <xacro:macro name="cylinder_identical_collision" params="radius height *material">
+        <visual>
+            <geometry>
+                <cylinder length="${height}" radius="${radius}"/>
+            </geometry>
+            <xacro:insert_block name="material"/>
+            <origin xyz="0 0 ${height/2}"/>
+        </visual>
+        <!-- <collision>
+            <geometry>
+                <cylinder length="${height}" radius="${radius}"/>
+            </geometry>
+            <origin xyz="0 0 ${height/2}"/>
+        </collision> -->
+    </xacro:macro>
+
+    <xacro:macro name="cylinder_identical_collision_2" params="radius height *material">
+        <visual>
+            <geometry>
+                <cylinder length="${height}" radius="${radius}"/>
+            </geometry>
+            <xacro:insert_block name="material"/>
+            <origin xyz="${radius} 0 0" rpy="${pi/2} 0 0"/>
+        </visual>
+        <!-- <collision>
+            <geometry>
+                <cylinder length="${height}" radius="${radius}"/>
+            </geometry>
+            <origin xyz="0 ${radius} 0" rpy="0 ${pi/2} 0"/>
+        </collision> -->
+    </xacro:macro>
+
+    <xacro:macro name="sphere" params="radius *material">
+        <visual>
+            <geometry>
+                <sphere radius="${radius}"/>
+            </geometry>
+            <xacro:insert_block name="material"/>
+            <origin xyz="${radius} 0 0" rpy="0 0 0"/>
+        </visual>
+        <!-- <collision>
+            <geometry>
+                <cylinder length="${height}" radius="${radius}"/>
+            </geometry>
+            <origin xyz="0 ${radius} 0" rpy="0 ${pi/2} 0"/>
+        </collision> -->
+    </xacro:macro>
+
+</robot>

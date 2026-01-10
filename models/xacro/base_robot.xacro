@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" xmlns="http://drake.mit.edu">
+
+    <xacro:include filename="inertial_macros.xacro"/>
+    <xacro:include filename="visual_macros.xacro"/>
+
+    <xacro:property name="shoulder_radius" value="${.18/2}" />
+    <xacro:property name="shoulder_height" value=".1615" />
+
+    <xacro:property name="upperarm_length" value=".30381" />
+    <xacro:property name="upperarm_height" value="0.070471" />
+    <xacro:property name="upperarm_mass" value=".982" />
+
+    <xacro:property name="forearm_length" value=".259916" />
+    <xacro:property name="forearm_height" value=".02545" />
+    <xacro:property name="forearm_mass" value="0.6" />
+
+    <!-- these are guesses and aren't part of actual robot measurements -->
+    <xacro:property name="wrist_bone_radius" value="0.005" />
+    <xacro:property name="wrist_bone_mass" value="0.01" /> 
+
+    <xacro:property name="end_effector_length" value="0.01" />
+    <xacro:property name="end_effector_radius" value="0.08" />
+    <xacro:property name="end_effector_mass" value=".158" />
+
+    <link name="base_link"></link>    
+    
+    <joint name="odrive_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="odrive_base"/>
+    </joint>
+
+    <link name="odrive_base">
+        <xacro:cylinder_identical_collision radius="${shoulder_radius}" height="${shoulder_height}">
+            <material name="blue">
+                <color rgba="0 0 1 1" />
+            </material>
+        </xacro:cylinder_identical_collision>
+    </link>
+
+    <joint name="shoulder" type="revolute">
+        <parent link="odrive_base"/>
+        <child link="upperarm"/>
+        <origin xyz="0 0 ${shoulder_height}"/>
+        <axis xyz="0 0 1" />
+        <limit upper="${pi}" lower="-${pi}" effort=".1" velocity="20"/>
+        <!-- <limit drake:acceleration="8.57" effort="320" lower="-2.96705972839" upper="2.96705972839" velocity="1.4835298641951802"/> -->
+        <!-- <dynamics damping="0.5"/> -->
+    </joint>
+
+    <link name="upperarm">
+        <xacro:square_prism_identical_collision length="${upperarm_length}" height="${upperarm_height}">
+            <material name="green">
+                <color rgba="0 1 0 1" />
+            </material>
+        </xacro:square_prism_identical_collision>
+        <xacro:square_prism_inertial mass="${upperarm_mass}" length="${upperarm_length}" height="${upperarm_height}"/>
+    </link>
+
+    <joint name="elbow" type="revolute">
+        <parent link="upperarm"/>
+        <child link="forearm"/>
+        <origin xyz="${upperarm_length} 0 ${upperarm_height}"/>
+        <axis xyz="0 0 1" />
+        <limit upper="${pi}" lower="-${pi}" effort=".1" velocity="20"/>
+        <!-- <limit drake:acceleration="8.57" effort="320" lower="-2.96705972839" upper="2.96705972839" velocity="1.4835298641951802"/>
+        <dynamics damping="0.5"/> -->
+    </joint>
+
+    <link name="forearm">
+        <xacro:square_prism_identical_collision length="${forearm_length}" height="${forearm_height}">
+            <material name="red">
+                <color rgba="1 0 0 1" />
+            </material>
+        </xacro:square_prism_identical_collision>
+        <xacro:square_prism_inertial mass="${forearm_mass}" length="${forearm_length}" height="${forearm_height}"/>
+    </link>
+
+    <joint name="wrist_orbit" type="revolute">
+        <parent link="forearm"/>
+        <child link="wrist_bone"/>
+        <origin xyz="${forearm_length} 0 ${forearm_height/2}" rpy="0 0 0"/>
+        <axis xyz="0 0 1" />
+        <limit upper="${pi/2}" lower="-${pi/2}" effort=".1" velocity="20"/>
+    </joint>
+
+    <link name="wrist_bone">
+        <xacro:sphere radius="${wrist_bone_radius}">
+            <material name="blue">
+                <color rgba="0 0 1 1" />
+            </material>
+        </xacro:sphere>
+        <xacro:square_prism_inertial_2 mass="${wrist_bone_mass}" length="${end_effector_length}" height="${end_effector_radius}"/>
+    </link>
+
+    <joint name="wrist_spin" type="revolute">
+        <parent link="wrist_bone"/>
+        <child link="end_effector"/>
+        <origin xyz="${wrist_bone_radius*2} 0 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0" />
+        <limit upper="${4*pi}" lower="-${4*pi}" effort=".1" velocity="20"/>
+    </joint>
+
+    <link name="end_effector">
+        <xacro:cylinder_identical_collision_2 radius="${end_effector_radius}" height="${end_effector_length}">
+            <material name="blue">
+                <color rgba="0 0 1 1" />
+            </material>
+        </xacro:cylinder_identical_collision_2>
+        <xacro:square_prism_inertial_2 mass="${end_effector_mass}" length="${end_effector_length}" height="${end_effector_radius}"/>
+    </link>
+
+    <transmission type="SimpleTransmission" name="shoulder_torque">
+        <actuator name="shoulder_input" />
+        <joint name="shoulder" />
+    </transmission>
+
+    <transmission type="SimpleTransmission" name="elbow_torque">
+        <actuator name="elbow_input" />
+        <joint name="elbow" />
+    </transmission>
+
+    <transmission type="SimpleTransmission" name="wrist_torque">
+        <actuator name="wrist_input" />
+        <joint name="wrist" />
+    </transmission>
+
+</robot>

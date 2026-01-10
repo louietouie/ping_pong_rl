@@ -26,8 +26,10 @@ All setup is currently in Google doc notes...
 ## Running SKRL-PPO-Agent Environment via Gymnasium
 1. `python -m scripts.ping_pong_robot.train_agent_skrl --task Isaac-PingPong-v0`
 2. Default algorithm used is PPO... which I believe is an actor/critic policy gradient method. Critic learns value function V(s) to allow for training during a run, rather than vanilla policy gradient or something where a full run needs to be completed to get the actual Q(s,a) for that run and make a gradient step.
-3. Other commands
-    - `python ./scripts/reinforcement_learning/skrl/train.py --task Isaac-Place-Toy2Box-Agibot-Right-Arm-RmpFlow-v0`
+
+## Running Examples for IsaacLab Repo
+1. `python ./scripts/reinforcement_learning/skrl/train.py --task Isaac-Place-Toy2Box-Agibot-Right-Arm-RmpFlow-v0`
+2. The RL framework used (SKRL) must also have a config file specified in the gymnasium env (the `__init__.py` file)
 
 ## Listing Registered Gymasium Environments
 1. `python -m scripts.ping_pong_robot.list_envs`
@@ -35,6 +37,12 @@ All setup is currently in Google doc notes...
 3. This script calls `import isaaclab_tasks` which will call it's own `__init__.py` to look for all subpackages and register their environments.
 4. The ping pong environment registration must be in the init file... `source/ping_pong_rl/ping_pong_rl/__init__.py` for it to show up as an environment
 5. Looking at the structure of the environments in the IsaacLab project (like `source/isaaclab_tasks/isaaclab_tasks/manager_based/classic/cartpole/__init__.py`)... note that these are in the source folder, not the script folder. Only their `random_agent` (analogus to my `create_agent_random` script) script is in the `scripts/` folder, but it is ok to seperate the environments into the `source/` folder because the `import isaaclab_tasks` will find them.
+
+
+
+### XACRO -> URDF -> USD
+1. `cd models`
+2. `ros2 run xacro xacro -o ping_pong_arm_from_xacro.urdf xacro/base_robot.xacro`
 
 
 
