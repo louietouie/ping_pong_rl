@@ -72,12 +72,20 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
 def main():
     """Main function."""
     # Load kit helper
-    sim_cfg = sim_utils.SimulationCfg(device=args_cli.device)
+    sim_cfg = sim_utils.SimulationCfg(
+        # dt=1/60,
+        # render_interval=1,
+        # physx=sim_utils.PhysxCfg(
+            # enable_ccd=True,
+            # enable_external_forces_every_iteration=True
+        # )
+        device=args_cli.device
+    )
     sim = SimulationContext(sim_cfg)
     # Set main camera
     sim.set_camera_view([2.5, 0.0, 4.0], [0.0, 0.0, 2.0])
     # Design scene
-    scene_cfg = PingPongSceneCfg(num_envs=args_cli.num_envs, env_spacing=2.0)
+    scene_cfg = PingPongSceneCfg(num_envs=args_cli.num_envs, env_spacing=4.0)
     scene = InteractiveScene(scene_cfg)
     # Play the simulator
     sim.reset()

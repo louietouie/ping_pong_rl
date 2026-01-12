@@ -23,12 +23,12 @@
     <xacro:property name="end_effector_radius" value="0.08" />
     <xacro:property name="end_effector_mass" value=".158" />
 
-    <link name="base_link"></link>    
+    <!-- <link name="base_link"></link>    
     
     <joint name="odrive_joint" type="fixed">
         <parent link="base_link"/>
         <child link="odrive_base"/>
-    </joint>
+    </joint> -->
 
     <link name="odrive_base">
         <xacro:cylinder_identical_collision radius="${shoulder_radius}" height="${shoulder_height}">

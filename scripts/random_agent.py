@@ -35,8 +35,7 @@ import torch
 import isaaclab_tasks  # noqa: F401
 from isaaclab_tasks.utils import parse_env_cfg
 
-import ping_pong_rl.tasks  # noqa: F401
-
+import source.ping_pong_rl.ping_pong_rl  # noqa: F401
 
 def main():
     """Random actions agent with Isaac Lab environment."""
