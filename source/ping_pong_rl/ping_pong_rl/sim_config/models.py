@@ -23,6 +23,7 @@ PINGPONG_CFG = ArticulationCfg(
         merge_fixed_joints=False,
         make_instanceable=False,
         asset_path=URDF_MODEL_PATH,
+        activate_contact_sensors=True,
         # How the robot behaves as a physical object in the simulation
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             rigid_body_enabled=True,

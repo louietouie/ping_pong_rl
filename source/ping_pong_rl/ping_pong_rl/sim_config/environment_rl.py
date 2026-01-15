@@ -20,7 +20,7 @@ class PingPongRLEnvCfg(ManagerBasedRLEnvCfg):
     # clone_in_fabric seems to break my URDF (links not connected) and simulation
     # https://isaac-sim.github.io/IsaacLab/main/source/api/lab/isaaclab.scene.html
     # num_envs is overridden in main by the cli arg
-    scene = PingPongSceneCfg(num_envs=100, env_spacing=5.0, clone_in_fabric=False)
+    scene = PingPongSceneCfg(num_envs=7, env_spacing=5.0, clone_in_fabric=False)
     # Basic settings
     observations: ObservationsCfg = ObservationsCfg()
     actions: ActionsCfg = ActionsCfg()

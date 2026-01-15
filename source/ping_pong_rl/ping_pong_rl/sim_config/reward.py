@@ -14,12 +14,12 @@ import torch
 from isaaclab.managers import RewardTermCfg as RewTerm
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.utils import configclass
-from isaaclab.assets import RigidObject
-from isaaclab.sensors import FrameTransformer
+from isaaclab.assets import RigidObject, RigidObjectData
+from isaaclab.sensors import FrameTransformer, ContactSensorData
 from isaaclab.envs import ManagerBasedRLEnv
 
+import source.ping_pong_rl.ping_pong_rl.sim_config.constants as c
 import isaaclab_tasks.manager_based.classic.cartpole.mdp as mdp
-
 
 def object_ee_distance(
     env: ManagerBasedRLEnv,
@@ -40,6 +40,44 @@ def object_ee_distance(
 
     return 1 - torch.tanh(object_ee_distance / std)
 
+def ball_paddle_contact(
+    env: ManagerBasedRLEnv,
+    ball_cfg: SceneEntityCfg = SceneEntityCfg("ball"),
+    contact_sensor_cfg: SceneEntityCfg = SceneEntityCfg("paddle_collision_sensor"),
+) -> torch.Tensor:
+    
+    contact_data: ContactSensorData = env.scene[contact_sensor_cfg.name].data
+    # current_air_time returns (num_sensors, num_bodies). The paddle_collision_sensor is only attached to a single body, the end effector
+    # num_sensors seems to be equal to num_envs
+    air_time = contact_data.current_air_time[:, 0]
+    contact_time = contact_data.current_contact_time[:, 0]
+
+    print("CONTACT TIME")
+    print(contact_time)
+    
+    # # stop rewarding for long contacts
+    # if (contact_time >= 2 * c.SIM_TIME_STEP): return 0
+    # # do not reward multiple contacts in quick succession
+    # if (air_time <= 20 * c.SIM_TIME_STEP): return 0
+
+    ball_data: RigidObjectData = env.scene[ball_cfg.name].data
+    # num_envs * 6 part velocity
+    v_RBall = ball_data.root_link_vel_w[:, :3] # world frame is relative frame for velocity, UNLESS rotation?
+    # num_envs * 3 part position (pose only)
+    p_WBall = ball_data.root_link_pos_w
+    # num_envs by 3
+    p_WorldRelative = env.scene.env_origins
+    p_RBall = -p_WorldRelative + p_WBall
+    p_RTarget = torch.tensor((c.TABLE_LENGTH * .75,0,c.TABLE_HEIGHT_FROM_FLOOR))
+    v_RPaddleTarget = find_ideal_contact_vector(p_RBall, p_RTarget, v_RBall) # difference between paddle contact force and paddle velocity? (spin and stuff?)
+    # v_RPaddleActual = 
+    return 0 # dot product between Target and Actual
+
+def find_ideal_contact_vector(p_RBall, p_RTarget, v_RBall):
+    p_BallTarget = -p_RBall + p_RTarget
+    bisect = torch.nn.functional.normalize(p_BallTarget, dim=1) - torch.nn.functional.normalize(v_RBall, dim=1)
+    return bisect
+
 @configclass
 class RewardsCfg:
     """Reward terms for the MDP."""
@@ -54,6 +92,14 @@ class RewardsCfg:
         params={"std": 0.1},
         weight=1.0
     )
+
+    # Paddle Contact with ball
+    ball_contact = RewTerm(
+        func=ball_paddle_contact,
+        weight=1.0
+    )
+
+    # Ball velocity towards other side
 
     robot_vel = RewTerm(
         func=mdp.joint_vel_l1,

@@ -8,7 +8,7 @@ import isaaclab.sim as sim_utils
 from isaaclab.assets import ArticulationCfg, RigidObjectCfg, AssetBaseCfg
 from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.utils import configclass
-from isaaclab.sensors import FrameTransformerCfg
+from isaaclab.sensors import FrameTransformerCfg, ContactSensorCfg
 from isaaclab.sensors.frame_transformer.frame_transformer_cfg import OffsetCfg
 from isaaclab.markers.config import FRAME_MARKER_CFG 
 
@@ -131,5 +131,15 @@ class PingPongSceneCfg(InteractiveSceneCfg):
                     ),
                 ),
             ],
+        )
+
+        self.paddle_collision_sensor = ContactSensorCfg(
+            prim_path="{ENV_REGEX_NS}/Robot/end_effector",
+            update_period=0.0, # 0 is update every step
+            track_air_time=True, # time between contacts
+            history_length=1,
+            debug_vis=True,
+            track_contact_points=True,
+            filter_prim_paths_expr=["{ENV_REGEX_NS}/Ball"],
         )
 
